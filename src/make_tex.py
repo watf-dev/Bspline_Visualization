@@ -13,8 +13,7 @@ def main():
 
   num_of_funcs = options.num_of_funcs  # Ensure integer input
 
-  template = r"""
-\documentclass[multi=minipage,border=0]{standalone}
+  template = r"""\documentclass[multi=minipage,border=0]{standalone}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{pgfplots,tikz}
 \usepackage{geometry}
@@ -75,10 +74,10 @@ def main():
 \end{document}
 """
 
-  repeat_pattern = r"""  
+  repeat_pattern = r"""
   \addplot table [x index=0, y index=1] {{GLOBAL/N{num}.txt}};
   \addlegendentry{{$N_{num}$}};
-"""
+""".strip("\n")
 
   repeated_lines = "\n".join(repeat_pattern.format(num=i) for i in range(num_of_funcs+1))
   final_tex = template.replace("% REPEAT_HERE", repeated_lines)
