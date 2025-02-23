@@ -10,7 +10,7 @@ KNOTS=knots
 XYZ=xyz0.txt
 BASE=$(pwd)/src
 
-mkdir -p $OUTPUT
+mkdir -p $OUTPUT/GLOBAL
 ln -sf ../../$XYZ $OUTPUT/GLOBAL/
 $BASE/gen_knots.py -p $ORDER -e $ELEMENT -o $KNOTS --output_dir $OUTPUT
 $BASE/make_splines.py $OUTPUT/$KNOTS -p $ORDER -c $XYZ
