@@ -26,6 +26,13 @@ for i in {1..6};do
   lualatex "\def\maxnum{$i} \input{curve.tex}"
   pdfcrop --margins 10 curve.pdf curve_c_$i.pdf
 done
+for i in {0..6};do
+  $BASE/make_recursiveBspline_tex.py -n $(($NUM_OF_FUNC + $i)) -o recursiveBspline.tex --output_dir .
+  ln -sf ../$OUTPUT/GLOBAL/recursiveBspline$i
+  lualatex -shell-escape "\def\xmin{0} \def\xmax{$ELEMENT} \def\id{$i} \input{recursiveBspline.tex}"
+  pdfcrop --margins 10 recursiveBspline.pdf recursiveBspline_c_$i.pdf
+done
 open bspline_c.pdf
 open curve_c*.pdf
+open recursiveBspline_c*.pdf
 

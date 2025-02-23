@@ -4,6 +4,18 @@ import os
 import numpy
 from scipy.special import comb
 
+def recursiveBspline(i,p,x,knots):
+  if p == 0:
+    return numpy.where((knots[i] <= x) & (x < knots[i+1]), 1.0, 0.0)
+  else:
+    left = 0.0
+    if knots[i+p] != knots[i]:
+      left = ((x-knots[i])/(knots[i+p]-knots[i]))*recursiveBspline(i,p-1,x,knots)
+    right = 0.0
+    if knots[i+p+1] != knots[i+1]:
+      right = ((knots[i+p+1]-x)/(knots[i+p+1]-knots[i+1]))*recursiveBspline(i+1,p-1,x,knots)
+    return left + right
+
 def genC(kv,p):
   nn=kv.size-p-1  # num of N
   eBoundaries,c=numpy.unique(kv,return_counts=True)
@@ -16,10 +28,25 @@ def genC(kv,p):
     knots.extend([eBoundaries[i]]*_c)
   knots=numpy.array(knots,dtype=">f8")
   C=numpy.eye(nn,dtype=">f8")
+  # print("knots",knots)
+  os.makedirs(os.path.join("OUTPUT","GLOBAL","recursiveBspline0"),exist_ok=True)
+  x_vals = numpy.linspace(kv[0], kv[-1], 1000)
+  for i in range(nn):
+    y_vals = numpy.array([recursiveBspline(i, p, x, kv) for x in x_vals])
+    mask = y_vals != 0.0
+    numpy.savetxt(os.path.join("OUTPUT","GLOBAL","recursiveBspline0","recursiveBspline{0:1d}.txt".format(i)),numpy.stack([x_vals[mask],y_vals[mask]],axis=-1))
   for j,xi in enumerate(knots):
+    nn+=1
     k=numpy.searchsorted(kv,xi)
     K,kv=insertKnots(kv,p,xi,k)
     C=numpy.dot(C,K)
+    # print("kv",kv)
+    x_vals = numpy.linspace(kv[0], kv[-1], 1000)
+    os.makedirs(os.path.join("OUTPUT","GLOBAL","recursiveBspline{0:1d}".format(j+1)),exist_ok=True)
+    for i in range(nn):
+      y_vals = numpy.array([recursiveBspline(i, p, x, kv) for x in x_vals])
+      mask = y_vals != 0.0
+      numpy.savetxt(os.path.join("OUTPUT","GLOBAL","recursiveBspline{0:1d}".format(j+1),"recursiveBspline{0:1d}.txt".format(i)),numpy.stack([x_vals[mask],y_vals[mask]],axis=-1))
     make_new_points(K,j)
   return C
 
