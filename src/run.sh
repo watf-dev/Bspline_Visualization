@@ -21,7 +21,7 @@ ln -sf ../$OUTPUT/GLOBAL
 lualatex -shell-escape "\def\xmin{0} \def\xmax{$ELEMENT} \def\numoffunc{$NUM_OF_FUNC} \input{bspline.tex}"
 pdfcrop --margins 10 bspline.pdf bspline_c.pdf
 ln -sf ../$XYZ
-for i in {1..6};do
+for i in {0..6};do
   ln -sf ../$OUTPUT/GLOBAL/xyz$i.txt
   lualatex "\def\maxnum{$i} \input{curve.tex}"
   pdfcrop --margins 10 curve.pdf curve_c_$i.pdf
@@ -35,4 +35,6 @@ done
 open bspline_c.pdf
 open curve_c*.pdf
 open recursiveBspline_c*.pdf
+cd ..
+lualatex src/all_figs.tex
 

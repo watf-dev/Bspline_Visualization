@@ -63,7 +63,7 @@ def main():
 
   repeat_pattern = r"""
   \addplot+[smooth, tension=1.0, thick] table[x index=0, y index=1] {{GLOBAL/curve{num}.txt}};
-  \addlegendentry{{piece {num}}};
+  \addlegendentry{{element {num}}};
 """.strip("\n")
 
   repeated_lines = "\n".join(repeat_pattern.format(num=i) for i in range(num_of_pieces))

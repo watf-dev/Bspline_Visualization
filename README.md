@@ -16,8 +16,10 @@ A project to visualize B-Spline basis functions to check their validity.
 ```
 
 ## Examples
-**Example 1: B-Spline Basis Function (Second Order)**
+**Summary: Knot Invertion**
+![all figs](figs/all_figs.png)
 
+**Example 1: B-Spline Basis Function (Second Order)**
 knots vector: [0,0,0,1,2,3,4,4,4]
 
 <p align="center">
