@@ -105,7 +105,7 @@ class Bspline:
     _C=numpy.round(_C,2)
     basisSpan=[]
     for A in range(self.nn):
-      spans=numpy.unique(kv[A:A+p+p-1])  # changed from A+p+p-1 to A+p+p-1
+      spans=numpy.unique(kv[A:A+p+2])
       spans_=kv[A:A+p+p]
       basisSpan.append(rearrangeList(spans))
     self.C=[]
